@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Category;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\StoreCategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -30,9 +31,19 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        //
+        // VALIDAR DATOS
+        $request->validated();
+
+        //GUARDAR REQUEST VALIDADO
+
+
+        //RETORNAR MENSAJES DE GUARDADO
+        return response()->json([
+            "request" => $request->all()
+        ]);
+
     }
 
     /**
