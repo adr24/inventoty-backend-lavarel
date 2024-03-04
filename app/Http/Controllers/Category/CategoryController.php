@@ -34,15 +34,16 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         // VALIDAR DATOS
-        $request->validated();
-
+        $category = $request->validated();
+        $category['slug'] = $this->createSlug($category['name']);
         //GUARDAR REQUEST VALIDADO
-
+        Category::create( $category);
 
         //RETORNAR MENSAJES DE GUARDADO
         return response()->json([
-            "request" => $request->all()
-        ]);
+            "message" => "La categoria fue registrada",
+            "category" => $category
+        ], 201);
 
     }
 
@@ -52,9 +53,24 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(string $term)
     {
         //
+        $category = Category::where('id', $term)
+            ->orWhere('slug', $term)
+            ->get();
+
+        //VALIDAR DE QUE EXITA LA CATEGORIA
+        if ($category->isEmpty())
+        {
+            return response()->json([
+                "message" => "No se encontro la categoria",
+            ], 404);
+        }
+
+        return response()->json([
+            "category" => $category[0]
+        ]);
     }
 
     /**
@@ -67,6 +83,26 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $category = Category::find($id);
+
+        if ($category->isEmpty())
+        {
+            return response()->json([
+                "message" => "No se encontro la categoria",
+            ], 404);
+        }
+
+        if($request->name)
+        {
+            $request['slug'] = $this->createSlug($request['name']);
+        }
+        $category->update($request->all());
+
+        return response()->json([
+            "message" => "La categoria fue actualizada",
+        ], 200);
+       
+
     }
 
     /**
@@ -78,5 +114,29 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
+        $category = Category::find($id);
+
+        if ($category->isEmpty())
+        {
+            return response()->json([
+                "message" => "No se encontro la categoria",
+            ], 404);
+        }
+
+        $category->delete();
+        return response()->json([
+            "message" => "La categoria fue actualizada",
+        ], 200);
+
+    }
+
+    private function createSlug(string $text)
+    {
+        $text = strtolower($text);
+        $text = preg_replace('/[^a-z0-9]+/','-',$text);
+        $text = trim($text, '-');
+        $text = preg_replace('/-+/','-',$text);
+
+        return $text;
     }
 }
