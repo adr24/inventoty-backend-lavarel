@@ -92,7 +92,7 @@ class CategoryController extends Controller
             ], 404);
         }
 
-        if($request->name)
+        if($request['name'])
         {
             $request['slug'] = $this->createSlug($request['name']);
         }
@@ -100,6 +100,7 @@ class CategoryController extends Controller
 
         return response()->json([
             "message" => "La categoria fue actualizada",
+            "category" => $category
         ], 200);
        
 
