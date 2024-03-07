@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Category\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Category\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,6 @@ Route::post('/categories', [CategoryController::class,'store']);
 Route::get('/categories/{term}', [CategoryController::class,'show']);
 Route::put('/categories/{term}', [CategoryController::class,'update']);
 Route::delete('/categories/{term}', [CategoryController::class,'destroy']);
+
+
+Route::apiResource('/products', ProductController::class);
