@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreCategoryRequest;
+use App\Http\Resources\Category\CategoryResource;
 
 class CategoryController extends Controller
 {
@@ -61,16 +62,14 @@ class CategoryController extends Controller
             ->get();
 
         //VALIDAR DE QUE EXITA LA CATEGORIA
-        if ($category->isEmpty())
+        if ( count($category) == 0)
         {
             return response()->json([
                 "message" => "No se encontro la categoria",
             ], 404);
         }
 
-        return response()->json([
-            "category" => $category[0]
-        ]);
+        return new CategoryResource($category[0]);
     }
 
     /**
@@ -85,7 +84,7 @@ class CategoryController extends Controller
         //
         $category = Category::find($id);
 
-        if ($category->isEmpty())
+        if ( !$category)
         {
             return response()->json([
                 "message" => "No se encontro la categoria",
