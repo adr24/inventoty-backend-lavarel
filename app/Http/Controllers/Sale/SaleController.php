@@ -46,15 +46,15 @@ class SaleController extends Controller
         foreach ($products as $product) 
         {
             $details[] = [
-                'sale_id' => $sale['id'],
+                'sale_id' => $sale->id,
                 'product_id' => $product['product_id'],
                 'product_name' => $product['product_name'],
                 'product_slug' => $product['product_slug'],
                 'product_price' => $product['product_price'],
                 'quantity' => $product['quantity'],
 
-                'created_ad' => Carbon::now(),
-                'updated_ad' => Carbon::now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
 
             ];
         //actualizar stock de productos
