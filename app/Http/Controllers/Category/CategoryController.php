@@ -126,7 +126,8 @@ class CategoryController extends Controller
 
         $category->delete();
         return response()->json([
-            "message" => "La categoria fue actualizada",
+            "message" => "La categoria fue eliminada",
+            "category" => $category
         ], 200);
 
     }

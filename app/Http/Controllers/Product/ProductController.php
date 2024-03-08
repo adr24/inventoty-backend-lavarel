@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Product;
 
+use id;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Product\ProductCollection;   
-use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Resources\Product\ProductResource;
+use App\Http\Requests\Product\StoreProductRequest;
+use App\Http\Resources\Product\ProductCollection;   
 
 class ProductController extends Controller
 {
@@ -97,12 +98,12 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, string $id)
     {
         //
         $product = Product::find($id);
 
-        if ($category->isEmpty())
+        if ( !$product)
         {
             return response()->json([
                 "message" => "No se encontro el producto",
@@ -129,9 +130,25 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(string $id)
     {
         //
+        $product = Product::find($id);
+
+        if (!$product)
+        {
+            return response()->json([
+                "message" => "No se encontro el producto",
+            ], 404);
+        }
+
+        $product->delete();
+        return response()->json([
+            "message" => "El producto fue eliminado",
+            "product" => new ProductResource($product),
+
+        ], 200);
+
     }
 
     private function createSlug(string $text)
