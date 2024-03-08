@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\Sale\SaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,6 @@ Route::delete('/categories/{term}', [CategoryController::class,'destroy']);
 
 
 Route::apiResource('/products', ProductController::class);
+
+Route::apiResource('/sales', SaleController::class)
+    ->only(['index','store','show']);
