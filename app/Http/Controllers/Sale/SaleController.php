@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Sale;
 
 use Carbon\Carbon;
 use App\Models\Sale;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductSale;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Sale\SaleCollection;
+use App\Http\Resources\Sale\SaleResource;
 
 class SaleController extends Controller
 {
@@ -18,7 +20,7 @@ class SaleController extends Controller
      */
     public function index()
     {
-        //
+        return new SaleCollection( Sale::all() );
     }
 
     /**
@@ -93,7 +95,9 @@ class SaleController extends Controller
      */
     public function show($id)
     {
-        //
+        $sale = Sale::find($id);
+
+        return new SaleResource($sale);
     }
 
     /**
