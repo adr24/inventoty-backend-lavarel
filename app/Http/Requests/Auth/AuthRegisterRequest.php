@@ -25,7 +25,7 @@ class AuthRegisterRequest extends FormRequest
     {
         return [
             "name" => "required|min:4",
-            "email" => "required|mail|unique:users,email",
+            "email" => "required|email|unique:users,email",
             "password" => "required|min:8|max:18",
         ];
     }
