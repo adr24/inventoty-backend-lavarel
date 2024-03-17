@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+
 use App\Models\User;
+use Illuminate\Http\Request;
+
+use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\Auth\UserResource;
+use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
 use Illuminate\Http\Client\Request as ClientRequest;
 
 class AuthController extends Controller
 {
-    public function login(AuthRegisterRequest $request)
+    public function login(AuthLoginRequest $request)
     {
         $credentials = $request->validated();
 
@@ -35,7 +40,10 @@ class AuthController extends Controller
     public function register(AuthRegisterRequest $request)
     {
         $credentials = $request->validated();
+
+
         $user = User::create($credentials);
+        //$credentials['password'] = Hash::make($credentials['password']);
 
         return response()->json([
             "message"=> "usuario registrado con exito",

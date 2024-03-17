@@ -24,7 +24,7 @@ class AuthLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            "email" => "required|mail|exist:users,email",
+            "email" => "required|exists:users,email",
             "password" => "required",
         ];
     }
@@ -32,7 +32,7 @@ class AuthLoginRequest extends FormRequest
     {
         return [
             "email.required" => "El campo email es requerido",
-            "email.exist" => "el email no existe",
+            "email.exists" => "el email no existe",
             "password.required" => "El password es requerido",
         ];
     }    
